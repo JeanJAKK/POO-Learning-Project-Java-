@@ -8,16 +8,17 @@ package gestion.fichiers.cli;
  *
  * @author jakk
  */
-public class CmAide extends Commande{
+public class CmAide extends Commande {
+
     @Override
     public void executer() {
-        System.out.println("Exit: quitter le programme");
-        System.out.println("Help: Aide");
-
+        System.out.println("Exit : quitter le programme");
+        System.out.println("Help : aide");
     }
 
     @Override
-    public void setParametres(String[] parametres) {
+    public void setPararmetres(String[] parametres) {
+        
     }
     
 }

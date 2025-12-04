@@ -8,14 +8,16 @@ package gestion.fichiers.cli;
  *
  * @author jakk
  */
-public class CmInconnue extends Commande{
+public class CmInconnue extends Commande {
+
     @Override
     public void executer() {
-         System.out.println("Commande Inconnue");
+        System.out.println("Commande Inconnue");
     }
 
     @Override
-    public void setParametres(String[] parametres) {
+    public void setPararmetres(String[] parametres) {
+        
     }
     
 }

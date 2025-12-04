@@ -4,7 +4,7 @@
  */
 package gestion.fichiers.cli;
 
-import gestion.fichiers.metier.Repertoire;
+import gestion.fichier.metier.Repertoire;
 
 /**
  *

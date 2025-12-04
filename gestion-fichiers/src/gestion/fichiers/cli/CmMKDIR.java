@@ -4,18 +4,16 @@
  */
 package gestion.fichiers.cli;
 
-
-
 /**
  *
- * @author tkossi
+ * @author jakk
  */
-public class CmTouch extends Commande {
+public class CmMKDIR extends Commande {
     private String nom;
 
     @Override
     public void executer() {
-        Navigateur.getInstance().getRepertoireCourant().ajouterFichierSimple(nom);
+        Navigateur.getInstance().getRepertoireCourant().ajouterRepertoire(nom);
     }
 
     @Override
