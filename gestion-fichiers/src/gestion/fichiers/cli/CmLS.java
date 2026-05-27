@@ -23,9 +23,16 @@ public class CmLS extends Commande {
         if (chemin != null) { 
             try {
                 Navigateur.getInstance().changerRepertoire(chemin);
-                Navigateur.getInstance().getRepertoireCourant().afficherContenu();
+                Repertoire r = Navigateur.getInstance().getRepertoireCourant();
+                if (r != null){
+                     r.afficherContenu();
+                }else{
+                    System.err.println(r + "Non trouvé");
+                }
             } catch (FileNotFoundException e) {
                  System.err.println(e.getMessage());
+            }catch(Exception e ){
+                System.err.println(e.getMessage());
             }
                
             

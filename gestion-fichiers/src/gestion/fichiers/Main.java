@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author tkossi
+ * @author jakk
  */
 public class Main {
 
