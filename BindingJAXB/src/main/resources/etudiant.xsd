@@ -3,8 +3,14 @@
            targetNamespace="http://mycompany.com/etudiant"
            xmlns="http://mycompany.com/etudiant"
            elementFormDefault="qualified">
-
-    <xs:element name="etudiant" type="EtudiantType"/>
+    
+    <!-- Type personnalisé pour une note entre 0 et 20 -->
+    <xs:simpleType name="NoteType">
+        <xs:restriction base="xs:double">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:complexType name="EtudiantType">
         <xs:sequence>
@@ -15,12 +21,15 @@
             <xs:element name="notes" minOccurs="0">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="note" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="note" type="NoteType" minOccurs="0" maxOccurs="unbounded"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
         <xs:attribute name="id" type="xs:int" use="required"/>
     </xs:complexType>
+    
+    <!-- element racine -->
+    <xs:element name="etudiant" type="EtudiantType"/>
 
 </xs:schema>

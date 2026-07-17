@@ -57,17 +57,17 @@ public class Main {
 
     public static void demoUnmarshalling()throws Exception{
                 String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
-                        "<etudiant id=\"1\">" +
-                        "    <nom>Diallo</nom>" +
-                        "    <prenom>Aminata</prenom>" +
-                        "    <filiere>Informatique</filiere>" +
-                        "    <annee>2</annee>" +
-                        "    <notes>" +
-                        "        <note>15.5</note>" +
-                        "        <note>14.0</note>" +
-                        "        <note>16.5</note>" +
-                        "    </notes>" +
-                        "</etudiant>";
+                                "<etudiant xmlns=\"http://mycompany.com/etudiant\" id=\"1\">" +
+                                "    <nom>Diallo</nom>" +
+                                "    <prenom>Aminata</prenom>" +
+                                "    <filiere>Informatique</filiere>" +
+                                "    <annee>2</annee>" +
+                                "    <notes>" +
+                                "        <note>15.5</note>" +
+                                "        <note>14.0</note>" +
+                                "        <note>13.5</note>" +
+                                "    </notes>" +
+                                "</etudiant>";
 
         JAXBContext context = JAXBContext.newInstance(Etudiant.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -78,7 +78,7 @@ public class Main {
         System.out.println("Prénom: " + e.getPrenom());
         System.out.println("Filière: " + e.getFiliere());
         System.out.println("Année: " + e.getAnnee());
-        System.out.println("Moyenne: " + e.getMoyenne());
+        System.out.println("Moyenne: " + e.getNotes());
     }
     
     
@@ -119,7 +119,7 @@ public class Main {
         System.out.println("Prénom: " + e.getPrenom());
         System.out.println("Filière: " + e.getFiliere());
         System.out.println("Année: " + e.getAnnee());
-        System.out.println("Moyenne: " + e.getMoyenne());
+        System.out.println("Moyenne: " + e.getNotes());
         
     }
 }

@@ -6,10 +6,15 @@ package swingexo1;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -22,7 +27,7 @@ public class SwingExo1 {
      */
     public static void main(String[] args) {
         
-        creerJFrame();
+        creerFormulaire();
     }
     
     
@@ -68,6 +73,39 @@ public class SwingExo1 {
 
 
         fenetre.setVisible(true);
+    }
+    
+    public static void creerFormulaire(){
+        JFrame frame = new JFrame("Formulaire d'inscription à l'EPL");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 500);
+        
+        frame.setLayout(new BorderLayout(10, 10));
+        
+        JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10));
+        
+        panel.add(new JLabel("Nom:"));
+        JTextField champnom = new JTextField();
+        panel.add(champnom);
+        
+        panel.add(new JLabel("Email:"));
+        JTextField champEmail= new JTextField();
+        panel.add(champEmail);
+        
+        
+        panel.add(new JLabel("Mot de passe:"));
+        JTextField champPassword = new JTextField();
+        panel.add(champPassword);
+        
+        
+        JPanel panelBoutons = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton boutonValider = new JButton("S'inscrire");
+        panelBoutons.add(boutonValider);
+        
+        frame.add(panel, BorderLayout.CENTER);
+        frame.add(panelBoutons, BorderLayout.SOUTH);
+        
+        frame.setVisible(true);
     }
     
     
