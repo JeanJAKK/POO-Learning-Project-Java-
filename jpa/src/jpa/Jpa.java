@@ -10,6 +10,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+import service.GroupeService;
 
 /**
  *
@@ -21,40 +22,42 @@ public class Jpa {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test2();
+        Groupe grp = new Groupe("Premier groupe", "groupe 1");
+        GroupeService service = new GroupeService();
+        service.ajouter(grp);
     }
 
-    private static void test1() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpaPU");
-        EntityManager em = emf.createEntityManager();
-
-        Groupe g1 = new Groupe("Groupe 1", "Premier groupe");
-
-        EntityTransaction transaction = em.getTransaction();
-        try {
-            transaction.begin();
-            em.persist(g1);
-        } catch (Exception e) {
-            transaction.rollback();
-        }
-    }
-    
-     private static void test2() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpaPU");
-        EntityManager em = emf.createEntityManager();
-
-        Groupe g1 = new Groupe("Groupe 2", "Deuxième groupe");
-        Utilisateur utilisateur = new Utilisateur("RORONOA", "Zoro", "zroronoa", "123456789", g1);
-
-        EntityTransaction transaction = em.getTransaction();
-        try {
-            transaction.begin();
-            em.persist(utilisateur);
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            transaction.rollback();
-        }
-    }
+//    private static void test1() {
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpaPU");
+//        EntityManager em = emf.createEntityManager();
+//
+//        Groupe g1 = new Groupe("Groupe 1", "Premier groupe");
+//
+//        EntityTransaction transaction = em.getTransaction();
+//        try {
+//            transaction.begin();
+//            em.persist(g1);
+//        } catch (Exception e) {
+//            transaction.rollback();
+//        }
+//    }
+//    
+//     private static void test2() {
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpaPU");
+//        EntityManager em = emf.createEntityManager();
+//
+//        Groupe g1 = new Groupe("Groupe 2", "Deuxième groupe");
+//        Utilisateur utilisateur = new Utilisateur("RORONOA", "Zoro", "zroronoa", "123456789", g1);
+//
+//        EntityTransaction transaction = em.getTransaction();
+//        try {
+//            transaction.begin();
+//            em.persist(utilisateur);
+//            transaction.commit();
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            transaction.rollback();
+//        }
+//    }
 
 }

@@ -20,7 +20,7 @@ public class GroupeDao {
     public static EntityManagerFactory emf;
     
      static{
-        emf = Persistence.createEntityManagerFactory("monUnite");
+        emf = Persistence.createEntityManagerFactory("jpaPU");
      }
     
     
@@ -73,7 +73,7 @@ public class GroupeDao {
        }
    }
    
-   public void supprimerUtilisateur(int id){
+   public void supprimerGroupe(int id){
        EntityManager em = emf.createEntityManager();
        EntityTransaction transaction = em.getTransaction();
        
@@ -96,7 +96,7 @@ public class GroupeDao {
        
        try {
            transaction.begin();
-           listeGrp = em.find(Groupe.class, id);
+           listeGrp = em.createQuery("SELECT g FROM groupes g").getResultList();
        } catch (Exception e) {
            transaction.rollback();
        }finally{

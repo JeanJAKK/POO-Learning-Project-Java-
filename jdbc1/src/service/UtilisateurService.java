@@ -6,13 +6,11 @@ package service;
 
 import dao.UtilisateurDao;
 import entite.Utilisateur;
-import java.sql.SQLException;
 import java.util.List;
-import util.ObjetNonTrouveException;
 
 /**
  *
- * @author Aude
+ * @author jakk
  */
 public class UtilisateurService {
     
