@@ -106,7 +106,11 @@ public class Utilisateur implements Serializable{
     public Integer getId() {
         return id;
     }
-
+    
+    public void setId(int id){
+        this.id = id;
+    }
+    
     public String getNom() {
         return nom;
     }
@@ -139,4 +143,11 @@ public class Utilisateur implements Serializable{
         this.motDePasse = motDePasse;
     }
     
+    public void setGroupe(Groupe groupe){
+        this.groupe = groupe;
+    }
+    
+    public Groupe getGroupe(){
+        return groupe;
+    }
 }

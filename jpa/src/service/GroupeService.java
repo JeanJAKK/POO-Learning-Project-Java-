@@ -23,6 +23,10 @@ public class GroupeService {
         this.dao.ajouterGroupe(grp);
     }
     
+    public void bestModifier(Groupe grp) throws Exception{
+        this.dao.bestModifierGroupe(grp);
+    }
+    
     public void modifier(Groupe grp) throws Exception{
         this.dao.modifierGroupe(grp);
     }

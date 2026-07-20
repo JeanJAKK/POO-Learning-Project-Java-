@@ -33,7 +33,9 @@ public class GroupeDao {
            em.persist(grp);
            transaction.commit();
        }catch (Exception ex){
-           transaction.rollback();
+            if(transaction.isActive()){
+                transaction.rollback();
+            } 
        }finally{
            em.close();
            emf.close();
@@ -46,10 +48,11 @@ public class GroupeDao {
        Groupe findedGrp = new Groupe();
        
        try {
-           transaction.begin();
            findedGrp = em.find(Groupe.class, id);
        } catch (Exception e) {
-           transaction.rollback();
+           if(transaction.isActive()){
+               transaction.rollback();
+           }
        }finally{
            em.close();
            emf.close();
@@ -58,6 +61,26 @@ public class GroupeDao {
    }
    
    public void modifierGroupe(Groupe grp){
+       EntityManager em = emf.createEntityManager();
+       EntityTransaction transaction = em.getTransaction();
+       
+       try{
+           transaction.begin();
+           Groupe modifGrp = em.find(Groupe.class, grp.getId());
+           modifGrp.setNom(grp.getNom());
+           modifGrp.setDescription(grp.getDescription());
+           transaction.commit();
+       }catch(Exception ex){
+           if(transaction.isActive()){
+               transaction.rollback();
+           }
+       }finally{
+           em.close();
+           emf.close();
+       }
+   }
+   
+   public void bestModifierGroupe(Groupe grp){
        EntityManager em = emf.createEntityManager();
        EntityTransaction transaction = em.getTransaction();
        
@@ -79,10 +102,12 @@ public class GroupeDao {
        
        try {
            transaction.begin();
-           em.remove(id);
+           em.remove(em.find(Groupe.class, id));
            transaction.commit();
        } catch (Exception e) {
-           transaction.rollback();
+           if(transaction.isActive()){
+               transaction.rollback();
+           }
        }finally{
            em.close();
            emf.close();
@@ -96,9 +121,11 @@ public class GroupeDao {
        
        try {
            transaction.begin();
-           listeGrp = em.createQuery("SELECT g FROM groupes g").getResultList();
+           listeGrp = em.createQuery("SELECT g FROM Groupe g").getResultList();
        } catch (Exception e) {
-           transaction.rollback();
+           if(transaction.isActive()){
+               transaction.rollback();
+           }
        }finally{
            em.close();
            emf.close();

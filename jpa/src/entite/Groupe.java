@@ -45,6 +45,12 @@ public class Groupe implements Serializable {
         this.description = description;
     }
     
+    public Groupe(int id, String nom, String description){
+        this.id = id;
+        this.nom = nom;
+        this.description = description;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -57,6 +63,9 @@ public class Groupe implements Serializable {
         return description;
     }
     
+    public void setId(int id){
+        this.id = id;
+    }
     
     public void setNom(String nom) {
         this.nom = nom;

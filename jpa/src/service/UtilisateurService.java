@@ -27,6 +27,10 @@ public class UtilisateurService {
          return this.dao.trouverUtilisateur(id);
     }
     
+    public void bestModifier(Utilisateur user) throws Exception{
+        this.dao.bestModifierUtilisateur(user);
+    }
+    
     public void modifier(Utilisateur user) throws Exception{
         this.dao.modifierUtilisateur(user);
     }
@@ -35,7 +39,7 @@ public class UtilisateurService {
         return this.dao.listerUtilisateur();
     }
     
-    public void supprimer(int id) throws Exception{
-        this.dao.supprimerUtilisateur(id);
+    public void supprimer(Utilisateur user) throws Exception{
+        this.dao.supprimerUtilisateur(user);
     }
 }
