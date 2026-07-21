@@ -30,7 +30,7 @@ public class GroupeUI extends JFrame{
         String aide = """
                       Entrer les informations suivantes
                       Nom et description => pour ajouterId,
-                      Nom et Description => pour modifier,
+                      Id, Nom et Description => pour modifier,
                       Id => pour trouver ou supprimer,
                       Click sur "Enregistrer" => pour lister""";
         
