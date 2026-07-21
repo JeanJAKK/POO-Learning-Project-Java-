@@ -32,18 +32,17 @@ public class GroupeUI extends JFrame{
                       Nom et description => pour ajouterId,
                       Nom et Description => pour modifier,
                       Id => pour trouver ou supprimer,
-                      Click sur "Enregistrer" pour lister""";
+                      Click sur "Enregistrer" => pour lister""";
         
         this.groupe = groupe;
-        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(800, 600);
-        this.add(ajouterPanel());
+        this.add(creerPanel());
         JOptionPane.showMessageDialog(this, aide);
         this.setVisible(true);
     }
     
-    public final JPanel ajouterPanel(){
+    public final JPanel creerPanel(){
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         
