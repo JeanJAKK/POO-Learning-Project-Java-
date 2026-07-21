@@ -11,6 +11,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -26,11 +27,19 @@ public class GroupeUI extends JFrame{
     private JButton boutonEnregistrer;
     
     public GroupeUI(Groupe groupe){
+        String aide = """
+                      Entrer les informations suivantes
+                      Nom et description => pour ajouterId,
+                      Nom et Description => pour modifier,
+                      Id => pour trouver ou supprimer,
+                      Click sur "Enregistrer" pour lister""";
+        
         this.groupe = groupe;
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(800, 600);
         this.add(ajouterPanel());
+        JOptionPane.showMessageDialog(this, aide);
         this.setVisible(true);
     }
     

@@ -41,7 +41,7 @@ public class Jpa {
 //            service.modifier(u1);
 
         GroupeControleur gc = new GroupeControleur();
-        gc.supprimer();
+        gc.lister();
     }
 
 }

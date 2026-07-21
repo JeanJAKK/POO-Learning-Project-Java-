@@ -7,9 +7,9 @@ package presentation.controleur;
 import entite.Groupe;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import presentation.vue.GroupeUI;
 import service.GroupeService;
@@ -78,23 +78,48 @@ public class GroupeControleur {
         });
     }
     
-    public JOptionPane trouver(){
-        String grpFinded;
+    public void trouver(){
         Groupe groupe = new Groupe();
         GroupeUI groupeUI = new GroupeUI(groupe);
         
         groupeUI.getBoutonEnregistrer().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                String grpFinded;
                 try {
                     groupeUI.modifierGroupe();
                     Groupe g = groupeUI.getGroupe();
                     grpFinded = service.trouver(g.getId()).toString();
+                    JOptionPane.showMessageDialog(groupeUI, "Groupe trouvé: " + grpFinded);
                 } catch (Exception ex) {
                     Logger.getLogger(GroupeControleur.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                groupeUI.dispose();
             }
         });
-        return Jo
+    }
+    
+    public void lister(){
+        Groupe groupe = new Groupe();
+        GroupeUI groupeUI = new GroupeUI(groupe);
+        
+        groupeUI.getBoutonEnregistrer().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                List<Groupe> liste;
+                try {
+                    liste = service.lister();
+                    
+                    String message = "Liste des groupes: \n"; 
+                    for(Groupe l : liste){
+                        message += l.toString() + "\n";
+                    }
+                    JOptionPane.showMessageDialog(groupeUI, message);
+                } catch (Exception ex) {
+                    Logger.getLogger(GroupeControleur.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                groupeUI.dispose();
+            }
+        });
     }
 }
