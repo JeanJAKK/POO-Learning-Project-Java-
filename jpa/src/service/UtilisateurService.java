@@ -7,6 +7,7 @@ package service;
 import dao.UtilisateurDao;
 import entite.Utilisateur;
 import java.util.List;
+import util.ObjetNonTrouveException;
 
 /**
  *
@@ -19,19 +20,28 @@ public class UtilisateurService {
         this.dao = new UtilisateurDao();
     }
     
-    public void ajouter(Utilisateur user){
+    public void ajouter(Utilisateur user) throws ObjetNonTrouveException{
+        if(user.getIdentifiant().trim().equals("") && user.getNom().trim().equals("")){
+            throw new ObjetNonTrouveException("Nom et identifiant requis");
+        }
         this.dao.ajouterUtilisateur(user);
     }
     
-    public Utilisateur trouver(int id) throws Exception{
-         return this.dao.trouverUtilisateur(id);
-    }
-    
-    public void bestModifier(Utilisateur user) throws Exception{
-        this.dao.bestModifierUtilisateur(user);
+    public Utilisateur trouver(Utilisateur user) throws Exception{
+        if(!user.getId().equals("")){
+            return this.dao.trouverUtilisateur(user.getId());
+        }
+        
+        if(!user.getIdentifiant().equals("")){
+            return this.dao.trouverUtilisateur(user.getIdentifiant());
+        }
+        return null;
     }
     
     public void modifier(Utilisateur user) throws Exception{
+        if(user.getId().equals("")){
+            throw new ObjetNonTrouveException("Id requis");
+        }
         this.dao.modifierUtilisateur(user);
     }
     
@@ -40,6 +50,15 @@ public class UtilisateurService {
     }
     
     public void supprimer(Utilisateur user) throws Exception{
-        this.dao.supprimerUtilisateur(user);
+        if(!user.getId().equals("")){
+            this.dao.supprimerUtilisateur(user.getId());
+            return;
+        }
+        
+        if(!user.getIdentifiant().equals("")){
+            this.dao.supprimerUtilisateur(user.getIdentifiant());
+            return;
+        }
     }
+    
 }

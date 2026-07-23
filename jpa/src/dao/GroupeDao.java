@@ -11,6 +11,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
+import util.ObjetNonTrouveException;
 
 /**
  *
@@ -36,6 +37,7 @@ public class GroupeDao {
             if(transaction.isActive()){
                 transaction.rollback();
             } 
+            System.out.println(ex.getMessage());
        }finally{
            em.close();
            emf.close();
@@ -44,20 +46,30 @@ public class GroupeDao {
    
    public Groupe trouverGroupe(int id){
        EntityManager em = emf.createEntityManager();
-       EntityTransaction transaction = em.getTransaction();
        Groupe findedGrp = new Groupe();
        
        try {
            findedGrp = em.find(Groupe.class, id);
-       } catch (Exception e) {
-           if(transaction.isActive()){
-               transaction.rollback();
-           }
+       } catch (Exception ex) {
+           System.out.println(ex.getMessage());
        }finally{
            em.close();
            emf.close();
        }
        return findedGrp;
+   }
+   
+   public Groupe trouverGroupe(String nom) throws Exception{
+       EntityManager em = emf.createEntityManager();
+       Groupe findedGroupe = new Groupe();
+       
+       try{
+            String jpql = "SELECT g FROM Groupe g WHERE g.nom=:nom";
+            findedGroupe = (Groupe) em.createQuery(jpql).setParameter("nom", nom).getSingleResult();
+       } catch(Exception ex){
+           throw new ObjetNonTrouveException("Aucun groupe avec le nom " + nom + " trouvé");
+       }
+       return findedGroupe;           
    }
    
    public void modifierGroupe(Groupe grp){
@@ -66,35 +78,20 @@ public class GroupeDao {
        
        try{
            transaction.begin();
-           Groupe modifGrp = em.find(Groupe.class, grp.getId());
-           modifGrp.setNom(grp.getNom());
-           modifGrp.setDescription(grp.getDescription());
+           em.merge(grp);
            transaction.commit();
        }catch(Exception ex){
            if(transaction.isActive()){
-               transaction.rollback();
+              transaction.rollback();
            }
+           System.out.println(ex.getMessage());
        }finally{
            em.close();
            emf.close();
        }
    }
    
-   public void bestModifierGroupe(Groupe grp){
-       EntityManager em = emf.createEntityManager();
-       EntityTransaction transaction = em.getTransaction();
-       
-       try{
-           transaction.begin();
-           em.merge(grp);
-           transaction.commit();
-       }catch(Exception ex){
-           transaction.rollback();
-       }finally{
-           em.close();
-           emf.close();
-       }
-   }
+   
    
    public void supprimerGroupe(int id){
        EntityManager em = emf.createEntityManager();
@@ -104,13 +101,31 @@ public class GroupeDao {
            transaction.begin();
            em.remove(em.find(Groupe.class, id));
            transaction.commit();
-       } catch (Exception e) {
+       } catch (Exception ex) {
            if(transaction.isActive()){
                transaction.rollback();
            }
+           System.out.println(ex.getMessage());
        }finally{
            em.close();
            emf.close();
+       }
+   }
+   
+   public void suprimerGroupe(String nom) throws Exception{
+       EntityManager em = emf.createEntityManager();
+       EntityTransaction transaction = em.getTransaction();
+       
+       try{
+           String jpql = "DELETE g FROM Groupe g WHERE g:nom=:nom";
+           transaction.begin();
+           em.createQuery(jpql).setParameter("nom", nom).executeUpdate();
+           transaction.commit();
+       }catch(Exception ex){
+           if(transaction.isActive()){
+               transaction.rollback();
+           }
+           throw new ObjetNonTrouveException(ex.getMessage());
        }
    }
    
@@ -122,10 +137,11 @@ public class GroupeDao {
        try {
            transaction.begin();
            listeGrp = em.createQuery("SELECT g FROM Groupe g").getResultList();
-       } catch (Exception e) {
+       } catch (Exception ex) {
            if(transaction.isActive()){
                transaction.rollback();
            }
+           System.out.println(ex.getMessage());
        }finally{
            em.close();
            emf.close();

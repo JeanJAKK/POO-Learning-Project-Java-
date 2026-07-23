@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import util.ObjetNonTrouveException;
 
 /**
  *
@@ -78,13 +79,20 @@ public class GroupeUI extends JFrame{
         gbc.gridy = 3;
         gbc.gridwidth = 2;
         boutonEnregistrer = new JButton("Enregistrer");
-        panel.add(boutonEnregistrer,gbc);
+        panel.add(boutonEnregistrer, gbc);
         
         return panel;
     }
     
-    public void modifierGroupe(){
-        this.groupe.setId(Integer.parseInt(id.getText()));
+    public void modifierGroupe()throws Exception{
+        if(id.getText().trim().equals("") && nom.getText().trim().equals("")){
+            throw new ObjetNonTrouveException("Aucun id/ nom fourni");
+        }
+        
+        if(!id.getText().trim().equals("")){
+            this.groupe.setId(Integer.parseInt(id.getText()));
+        }
+        
         this.groupe.setNom(nom.getText());
         this.groupe.setDescription(description.getText());
     }

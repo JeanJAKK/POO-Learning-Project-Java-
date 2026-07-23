@@ -39,10 +39,10 @@ public class Jpa {
 //        Utilisateur u1 = new Utilisateur(2,"MONKEY", "Luffy", "MKYDLUFF45", "23324modifié", g1);
 //        UtilisateurService service = new UtilisateurService();
 //            service.modifier(u1);
-        Groupe g = new Groupe();
+        Groupe g = new Groupe("Groupe 1", "Premier groupeee modifié 2");
         GroupeService gs = new GroupeService();
         GroupeControleur gc = new GroupeControleur();
-        gs.bestModifier(g);
+        gs.modifier(g);
     }
 
 }

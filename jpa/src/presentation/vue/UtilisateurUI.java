@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import service.GroupeService;
+import util.ObjetNonTrouveException;
 
 /**
  *
@@ -112,8 +113,15 @@ public class UtilisateurUI extends JFrame{
         return panel;
     }
     
-    public void modifierUtilisateur(){
-        this.utilisateur.setId(Integer.parseInt(id.getText()));
+    public void modifierUtilisateur() throws ObjetNonTrouveException{
+        if(id.getText().trim().equals("") && identifiant.getText().trim().equals("")){
+            throw new ObjetNonTrouveException("Aucun id/ Identifiant fourni");
+        }
+        
+        if(!id.getText().trim().equals("")){
+            this.utilisateur.setId(Integer.parseInt(id.getText()));
+        }
+        
         this.utilisateur.setIdentifiant(identifiant.getText());
         this.utilisateur.setNom(nom.getText());
         this.utilisateur.setPrenom(prenom.getText());

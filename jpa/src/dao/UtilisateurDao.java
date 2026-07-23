@@ -11,6 +11,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
+import util.ObjetNonTrouveException;
 
 /**
  *
@@ -19,9 +20,9 @@ import java.util.List;
 public class UtilisateurDao {
     public static EntityManagerFactory emf;
     
-     static{
+    static{
         emf = Persistence.createEntityManagerFactory("jpaPU");
-     }
+    }
      
     public void ajouterUtilisateur(Utilisateur user){
        EntityManager em = emf.createEntityManager();
@@ -35,13 +36,14 @@ public class UtilisateurDao {
             if(transaction.isActive()){
                 transaction.rollback();
             } 
+            System.out.println(ex.getMessage());
        }finally{
            em.close();
            emf.close();
        }
-   }
+    }
    
-   public Utilisateur trouverUtilisateur(int id){
+    public Utilisateur trouverUtilisateur(int id){
        EntityManager em = emf.createEntityManager();
        EntityTransaction transaction = em.getTransaction();
        Utilisateur findedUser = new Utilisateur();
@@ -49,77 +51,84 @@ public class UtilisateurDao {
        try {
            transaction.begin();
            findedUser = em.find(Utilisateur.class, id);
-       } catch (Exception e) {
+       } catch (Exception ex) {
            if(transaction.isActive()){
                transaction.rollback();
            }
+           System.out.println(ex.getMessage());
        }finally{
            em.close();
            emf.close();
        }
        return findedUser;
-   }
+    }
    
-   public void modifierUtilisateur(Utilisateur user){
+    public Utilisateur trouverUtilisateur(String identifiant) throws ObjetNonTrouveException{
+       EntityManager em = emf.createEntityManager();
+       Utilisateur findedUser = new Utilisateur();
+       
+       try {
+           String jpql = "SELECT g FROM Utilisateur g WHERE g.identifiant=:identifiant";
+           findedUser = (Utilisateur) em.createQuery(jpql).setParameter("identifiant", identifiant).getSingleResult();
+       } catch (Exception e) {
+           throw new ObjetNonTrouveException("Aucun utilisateur avec l'identifiant " + identifiant + " trouvé");
+       }
+       return findedUser;
+    }
+   
+    public void modifierUtilisateur(Utilisateur user){
        EntityManager em = emf.createEntityManager();
        EntityTransaction transaction = em.getTransaction();
        
        try{
            transaction.begin();
-           Utilisateur modifUser = em.find(Utilisateur.class, user.getId());
-           modifUser.setNom(user.getNom());
-           modifUser.setPrenom(user.getPrenom());
-           modifUser.setIdentifiant(user.getIdentifiant());
-           modifUser.setMotDePasse(user.getMotDePasse());
-           modifUser.setGroupe(user.getGroupe());
+           em.merge(user);
            transaction.commit();
        }catch(Exception ex){
            if(transaction.isActive()){
                transaction.rollback();
            }
+           System.out.println(ex.getMessage());
        }finally{
            em.close();
            emf.close();
        }
-   }
-   
-   public void bestModifierUtilisateur(Utilisateur user){
+    }
+    
+    public void supprimerUtilisateur(int id){
        EntityManager em = emf.createEntityManager();
        EntityTransaction transaction = em.getTransaction();
        
        try {
            transaction.begin();
-           em.merge(user);
+           em.remove(em.find(Utilisateur.class, id));
            transaction.commit();
-       } catch (Exception e) {
+       } catch (Exception ex) {
            if(transaction.isActive()){
                transaction.rollback();
            }
-       } finally {
-           em.close();
-           emf.close();
-       }
-   }
-   
-   public void supprimerUtilisateur(Utilisateur user){
-       EntityManager em = emf.createEntityManager();
-       EntityTransaction transaction = em.getTransaction();
-       
-       try {
-           transaction.begin();
-           em.remove(user.getId());
-           transaction.commit();
-       } catch (Exception e) {
-           if(transaction.isActive()){
-               transaction.rollback();
-           }
+           System.out.println(ex.getMessage());
        }finally{
            em.close();
            emf.close();
        }
-   }
+    }
    
-   public List<Utilisateur> listerUtilisateur(){
+    public void supprimerUtilisateur(String identifiant) throws ObjetNonTrouveException{
+       EntityManager em = emf.createEntityManager();
+       EntityTransaction transaction = em.getTransaction();
+       
+       try {
+           String jpql = "DELETE FROM Utilisateur u WHERE u.identifiant=:identifiant";
+           transaction.begin();
+           em.createQuery(jpql).setParameter("identifiant", identifiant).executeUpdate();
+           transaction.commit();
+       } catch (Exception e) {
+           throw new ObjetNonTrouveException("Aucun utilisateur avec l'identifiant " + identifiant + " trouvé");
+       }
+    }
+   
+    public List<Utilisateur> listerUtilisateur(){
        EntityManager em = emf.createEntityManager();
        EntityTransaction transaction = em.getTransaction();
        List<Utilisateur> listeUser = new ArrayList<>();
@@ -127,13 +136,16 @@ public class UtilisateurDao {
        try {
            transaction.begin();
            listeUser = em.createQuery("SELECT u FROM Utilisateur u").getResultList();
-       } catch (Exception e) {
-           transaction.rollback();
+       } catch (Exception ex) {
+           if(transaction.isActive()){
+               transaction.rollback();
+           }
+           System.out.println(ex.getMessage());
        }finally{
            em.close();
            emf.close();
        }
        
        return listeUser;
-   }
+    }
 }
