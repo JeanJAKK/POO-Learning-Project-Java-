@@ -41,7 +41,7 @@ public class UtilisateurControleur {
                 } catch (ObjetNonTrouveException ex) {
                     Logger.getLogger(UtilisateurControleur.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+                utilisateurUI.dispose();
             }
         });
     }

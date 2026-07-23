@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import presentation.controleur.GroupeControleur;
+import presentation.controleur.UtilisateurControleur;
 import service.GroupeService;
 import service.UtilisateurService;
 
@@ -41,8 +42,10 @@ public class Jpa {
 //            service.modifier(u1);
         Groupe g = new Groupe("Groupe 1", "Premier groupeee modifié 2");
         GroupeService gs = new GroupeService();
-        GroupeControleur gc = new GroupeControleur();
-        gs.modifier(g);
+        Utilisateur user  = new Utilisateur();
+        UtilisateurControleur us = new UtilisateurControleur();
+//        GroupeControleur gc = new GroupeControleur();
+        us.ajouter();
     }
 
 }

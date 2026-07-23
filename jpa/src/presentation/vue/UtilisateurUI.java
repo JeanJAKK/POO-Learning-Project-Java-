@@ -72,7 +72,7 @@ public class UtilisateurUI extends JFrame{
         
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panel.add(new JLabel("Nom"));
+        panel.add(new JLabel("Nom"), gbc);
         gbc.gridx = 1;
         nom = new JTextField(15);
         panel.add(nom, gbc);
@@ -86,7 +86,7 @@ public class UtilisateurUI extends JFrame{
         
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panel.add(new JLabel("Identifiant"));
+        panel.add(new JLabel("Identifiant"), gbc);
         gbc.gridx = 1;
         identifiant = new JTextField(15);
         panel.add(identifiant, gbc); 
@@ -96,18 +96,20 @@ public class UtilisateurUI extends JFrame{
         panel.add(new JLabel("Mot de passe"), gbc);
         gbc.gridx = 1;
         mot_de_passe = new JPasswordField(15);
-        panel.add(mot_de_passe);
+        panel.add(mot_de_passe, gbc);
         
         gbc.gridx = 0;
         gbc.gridy = 5;
-        panel.add(new JLabel("Groupe"));
+        panel.add(new JLabel("Groupe"), gbc);
         gbc.gridx = 1;
         groupe = new JTextField(15);
         panel.add(groupe, gbc);
         
+        gbc.gridx = 0;
+        gbc.gridy = 6;
         gbc.gridwidth = 2;
-        boutonEnregistrer = new JButton();
-        panel.add(boutonEnregistrer);
+        boutonEnregistrer = new JButton("Enregistrer");
+        panel.add(boutonEnregistrer, gbc);
                 
         
         return panel;
@@ -145,7 +147,7 @@ public class UtilisateurUI extends JFrame{
         Groupe u = null;
         try {
             GroupeService service = new GroupeService();
-            u = service.trouver(id);
+//            u = service.trouver(id);
         } catch (Exception ex) {
             Logger.getLogger(UtilisateurUI.class.getName()).log(Level.SEVERE, null, ex);
         }
