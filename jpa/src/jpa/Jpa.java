@@ -110,7 +110,7 @@ public class Jpa {
         Utilisateur user  = new Utilisateur();
         UtilisateurControleur us = new UtilisateurControleur();
         GroupeControleur gc = new GroupeControleur();
-        us.ajouter();
+        us.trouver();
     }
 
     public static JPanel panelOperation() {
