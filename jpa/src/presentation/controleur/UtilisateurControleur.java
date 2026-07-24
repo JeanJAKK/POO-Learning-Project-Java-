@@ -26,7 +26,7 @@ public class UtilisateurControleur {
         this.service = new UtilisateurService();
     }
     
-    public void ajouter(){
+    public void ajouter() throws ObjetNonTrouveException{
         Utilisateur utilisateur = new Utilisateur();
         UtilisateurUI utilisateurUI = new UtilisateurUI(utilisateur);
         
@@ -46,7 +46,7 @@ public class UtilisateurControleur {
         });
     }
     
-    public void modifier(int id){
+    public void modifier(int id) throws ObjetNonTrouveException{
             Utilisateur utilisateur = new Utilisateur();
             UtilisateurUI utilisateurUI = new UtilisateurUI(utilisateur);
             
@@ -69,7 +69,7 @@ public class UtilisateurControleur {
     }
 
     
-    public void trouver(){
+    public void trouver() throws ObjetNonTrouveException{
         Utilisateur utilisateur = new Utilisateur();
         UtilisateurUI  utilisateurUI = new UtilisateurUI(utilisateur);
         
@@ -97,7 +97,7 @@ public class UtilisateurControleur {
         });
     }
     
-    public void supprimer(){
+    public void supprimer() throws ObjetNonTrouveException{
         Utilisateur utilisateur = new Utilisateur();
         UtilisateurUI utilisateurUI = new UtilisateurUI(utilisateur);
         
@@ -118,7 +118,7 @@ public class UtilisateurControleur {
         });
     }
     
-    public void lister(){
+    public void lister() throws ObjetNonTrouveException{
         Utilisateur utilisateur = new Utilisateur();
         UtilisateurUI utilisateurUI = new UtilisateurUI(utilisateur);
         

@@ -4,14 +4,18 @@
  */
 package presentation.vue;
 
+import dao.GroupeDao;
 import entite.Groupe;
 import entite.Utilisateur;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,10 +36,10 @@ public class UtilisateurUI extends JFrame{
     private JTextField prenom;
     private JTextField identifiant;
     private JPasswordField mot_de_passe;
-    private JTextField groupe;
+    private JComboBox<String> groupe;
     private JButton boutonEnregistrer;
     
-    public UtilisateurUI(Utilisateur utilisateur){
+    public UtilisateurUI(Utilisateur utilisateur) throws ObjetNonTrouveException{
         String aide = """
                     Entrer les informations suivantes
                     Nom, prenom, identifiant, mot de passe, groupe => pour ajouterId,
@@ -52,7 +56,7 @@ public class UtilisateurUI extends JFrame{
         this.setVisible(true);
     }
     
-    public final JPanel creerPanel(){
+    public final JPanel creerPanel() throws ObjetNonTrouveException{
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         
@@ -102,7 +106,8 @@ public class UtilisateurUI extends JFrame{
         gbc.gridy = 5;
         panel.add(new JLabel("Groupe"), gbc);
         gbc.gridx = 1;
-        groupe = new JTextField(15);
+        groupe = new JComboBox<>();
+        listeGroupe() ;
         panel.add(groupe, gbc);
         
         gbc.gridx = 0;
@@ -111,7 +116,6 @@ public class UtilisateurUI extends JFrame{
         boutonEnregistrer = new JButton("Enregistrer");
         panel.add(boutonEnregistrer, gbc);
                 
-        
         return panel;
     }
     
@@ -128,7 +132,7 @@ public class UtilisateurUI extends JFrame{
         this.utilisateur.setNom(nom.getText());
         this.utilisateur.setPrenom(prenom.getText());
         this.utilisateur.setMotDePasse(String.valueOf(mot_de_passe.getPassword()));
-        this.utilisateur.setGroupe(recupererGroupeViaIdSaisi(Integer.parseInt(groupe.getText())));
+        this.utilisateur.setGroupe((Groupe) recupererGroupeViaNomSaisi());
     }
     
     public Utilisateur getUtilisateur(){
@@ -139,15 +143,30 @@ public class UtilisateurUI extends JFrame{
         return boutonEnregistrer;
     }
     
-    /*
-        Vu que setGroupe à besoin d'une entité de classe Groupe or l'user ne nous fourni que l'id
-        du groupe il nous faut cette méthode
-        */
-    public Groupe recupererGroupeViaIdSaisi(int id){
+    
+    // Liste des  noms des groupes pour JComboBox
+    public List<String> listeGroupe() throws ObjetNonTrouveException{
+        List<String> listeNomGrp = new ArrayList<>();
+        try {
+            List<Groupe> listeGrp = new GroupeDao().listerGroupe();
+            
+            for(Groupe g : listeGrp){
+                System.out.println(nom + " ");
+                this.groupe.addItem(g.getNom());
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        
+        return listeNomGrp ;
+    }
+    
+    // recuperer le groupe à partir du nom selectionner dans ComboBox
+    public Groupe recupererGroupeViaNomSaisi(){
         Groupe u = null;
         try {
-            GroupeService service = new GroupeService();
-//            u = service.trouver(id);
+            GroupeDao dao = new GroupeDao();
+            u = dao.trouverGroupe(groupe.getSelectedItem().toString());
         } catch (Exception ex) {
             Logger.getLogger(UtilisateurUI.class.getName()).log(Level.SEVERE, null, ex);
         }

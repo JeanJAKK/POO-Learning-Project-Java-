@@ -28,20 +28,13 @@ public class UtilisateurService {
     }
     
     public Utilisateur trouver(Utilisateur user) throws Exception{
-        if(!user.getId().equals("")){
-            return this.dao.trouverUtilisateur(user.getId());
-        }
-        
         if(!user.getIdentifiant().equals("")){
             return this.dao.trouverUtilisateur(user.getIdentifiant());
         }
-        return null;
+        return this.dao.trouverUtilisateur(user.getId());
     }
     
     public void modifier(Utilisateur user) throws Exception{
-        if(user.getId().equals("")){
-            throw new ObjetNonTrouveException("Id requis");
-        }
         this.dao.modifierUtilisateur(user);
     }
     
@@ -50,14 +43,10 @@ public class UtilisateurService {
     }
     
     public void supprimer(Utilisateur user) throws Exception{
-        if(!user.getId().equals("")){
-            this.dao.supprimerUtilisateur(user.getId());
-            return;
-        }
-        
+        this.dao.supprimerUtilisateur(user.getId());
+               
         if(!user.getIdentifiant().equals("")){
             this.dao.supprimerUtilisateur(user.getIdentifiant());
-            return;
         }
     }
     
