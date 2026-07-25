@@ -85,11 +85,11 @@ public class GroupeUI extends JFrame{
     }
     
     public void modifierGroupe()throws Exception{
-        if(id.getText().trim().equals("") && nom.getText().trim().equals("")){
+        if(id.getText().equals("") && nom.getText().equals("")){
             throw new ObjetNonTrouveException("Aucun id/ nom fourni");
         }
         
-        if(!id.getText().trim().equals("")){
+        if(!id.getText().equals("")){
             this.groupe.setId(Integer.parseInt(id.getText()));
         }
         

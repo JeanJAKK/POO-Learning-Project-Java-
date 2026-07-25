@@ -37,7 +37,6 @@ public class UtilisateurControleur {
                     utilisateurUI.modifierUtilisateur();
                     Utilisateur u = utilisateurUI.getUtilisateur();
                     service.ajouter(u);
-                    utilisateurUI.dispose();
                 } catch (ObjetNonTrouveException ex) {
                     Logger.getLogger(UtilisateurControleur.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -46,7 +45,7 @@ public class UtilisateurControleur {
         });
     }
     
-    public void modifier(int id) throws ObjetNonTrouveException{
+    public void modifier() throws ObjetNonTrouveException{
             Utilisateur utilisateur = new Utilisateur();
             UtilisateurUI utilisateurUI = new UtilisateurUI(utilisateur);
             
@@ -56,8 +55,8 @@ public class UtilisateurControleur {
                     try {
                         utilisateurUI.modifierUtilisateur();
                         Utilisateur u = utilisateurUI.getUtilisateur();
+                        u.setId(utilisateurUI.recupererId());
                         service.modifier(u);
-                        utilisateurUI.dispose();
                     } catch (ObjetNonTrouveException ex) {
                         JOptionPane.showMessageDialog(utilisateurUI, ex.getMessage());
                     } catch(Exception ex){

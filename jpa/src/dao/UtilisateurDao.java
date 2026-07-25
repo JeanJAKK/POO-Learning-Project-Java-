@@ -114,19 +114,19 @@ public class UtilisateurDao {
        }
     }
    
-    public void supprimerUtilisateur(String identifiant) throws ObjetNonTrouveException{
-       EntityManager em = emf.createEntityManager();
-       EntityTransaction transaction = em.getTransaction();
-       
-       try {
-           String jpql = "DELETE FROM Utilisateur u WHERE u.identifiant=:identifiant";
-           transaction.begin();
-           em.createQuery(jpql).setParameter("identifiant", identifiant).executeUpdate();
-           transaction.commit();
-       } catch (Exception e) {
-           throw new ObjetNonTrouveException("Aucun utilisateur avec l'identifiant " + identifiant + " trouvé");
-       }
-    }
+//    public void supprimerUtilisateur(String identifiant) throws ObjetNonTrouveException{
+//       EntityManager em = emf.createEntityManager();
+//       EntityTransaction transaction = em.getTransaction();
+//       
+//       try {
+//           String jpql = "DELETE FROM Utilisateur u WHERE u.identifiant=:identifiant";
+//           transaction.begin();
+//           em.createQuery(jpql).setParameter("identifiant", identifiant).executeUpdate();
+//           transaction.commit();
+//       } catch (Exception e) {
+//           throw new ObjetNonTrouveException("Aucun utilisateur avec l'identifiant " + identifiant + " trouvé");
+//       }
+//    }
    
     public List<Utilisateur> listerUtilisateur(){
        EntityManager em = emf.createEntityManager();

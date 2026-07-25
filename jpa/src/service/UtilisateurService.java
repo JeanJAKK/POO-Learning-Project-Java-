@@ -21,7 +21,7 @@ public class UtilisateurService {
     }
     
     public void ajouter(Utilisateur user) throws ObjetNonTrouveException{
-        if(user.getIdentifiant().trim().equals("") && user.getNom().trim().equals("")){
+        if(user.getIdentifiant().equals("") && user.getNom().equals("")){
             throw new ObjetNonTrouveException("Nom et identifiant requis");
         }
         this.dao.ajouterUtilisateur(user);
@@ -43,11 +43,12 @@ public class UtilisateurService {
     }
     
     public void supprimer(Utilisateur user) throws Exception{
-        this.dao.supprimerUtilisateur(user.getId());
-               
         if(!user.getIdentifiant().equals("")){
             this.dao.supprimerUtilisateur(user.getIdentifiant());
+            
         }
+        this.dao.supprimerUtilisateur(user.getId());
+
     }
     
 }
