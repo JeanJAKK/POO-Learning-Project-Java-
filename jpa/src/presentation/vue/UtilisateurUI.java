@@ -34,7 +34,7 @@ import util.ObjetNonTrouveException;
  * @author jakk
  */
 public class UtilisateurUI extends JFrame{
-    private final Utilisateur utilisateur;
+    private Utilisateur utilisateur;
     private int id ;
     private JTextField nom;
     private JTextField prenom;
@@ -42,7 +42,7 @@ public class UtilisateurUI extends JFrame{
     private JPasswordField mot_de_passe;
     private JComboBox<String> groupe;
     private JButton boutonEnregistrer;
-    private JTextArea output;
+    private JTextArea output = new JTextArea("");  //Ecran
     private JButton ajouter;
     private JButton modifier;
     private JButton lister;
@@ -59,11 +59,11 @@ public class UtilisateurUI extends JFrame{
         this.add(creerFormulaire(), BorderLayout.WEST);
         this.add(creerEcran());
         this.setVisible(true);
-        this.utilisateur = null;
     }
     
-    public UtilisateurUI(Utilisateur utilisateur){
-        this.utilisateur = utilisateur;
+    public UtilisateurUI(Utilisateur utilisateur) throws ObjetNonTrouveException{
+        this();
+        this.utilisateur = new Utilisateur();
     }
     
     public final JPanel creerFormulaire() throws ObjetNonTrouveException{
@@ -178,8 +178,8 @@ public class UtilisateurUI extends JFrame{
             throw new ObjetNonTrouveException("Nom et Identifiant requis");
         }
         
-        this.utilisateur.setIdentifiant(identifiant.getText());
-        this.utilisateur.setNom(nom.getText());
+        this.utilisateur.setIdentifiant(identifiant.getText().trim());
+        this.utilisateur.setNom(nom.getText().trim());
         this.utilisateur.setPrenom(prenom.getText().trim());
         this.utilisateur.setMotDePasse(String.valueOf(mot_de_passe.getPassword()));
         this.utilisateur.setGroupe((Groupe) recupererGroupeViaNomSaisi());
@@ -192,7 +192,7 @@ public class UtilisateurUI extends JFrame{
                 int parseInt = Integer.parseInt(input.trim());
                 return parseInt;
             } catch (HeadlessException | NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Entrer un entier!");
+                JOptionPane.showMessageDialog(this, "Entrer un entier valide!");
             }
         }
     }
@@ -205,6 +205,36 @@ public class UtilisateurUI extends JFrame{
         return boutonEnregistrer;
     }
     
+    public JButton getBoutonAjouter(){
+        return ajouter;
+    }
+    
+    public JButton getBoutonModifier(){
+        return modifier;
+    }
+    
+    public JButton getBoutonTrouver(){
+        return trouver;
+    }
+    
+    public JButton getBoutonSupprimer(){
+        return supprimer;
+    }
+    
+    public JButton getBoutonLister(){
+        return lister;
+    }
+    
+    public void viderFormulaire(){
+        nom.setText("");
+        prenom.setText("");
+        identifiant.setText("");
+        mot_de_passe.setText("");
+    }
+    
+    public void afficherSurEcran(String affichage){
+        output.setText(affichage);
+    }
     
     // Liste des  noms des groupes pour JComboBox
     public List<String> remplirListeGroupe() throws ObjetNonTrouveException{
@@ -213,13 +243,11 @@ public class UtilisateurUI extends JFrame{
             List<Groupe> listeGrp = new GroupeDao().listerGroupe();
             
             for(Groupe g : listeGrp){
-                System.out.println(nom + " ");
                 this.groupe.addItem(g.getNom());
             }
         } catch (Exception e) {
             throw e;
         }
-        
         return listeNomGrp ;
     }
     

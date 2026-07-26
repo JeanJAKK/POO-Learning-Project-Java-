@@ -27,7 +27,7 @@ public class Groupe implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name ="nom", nullable = false)
+    @Column(name ="nom", nullable = false, unique = true)
     private String nom;
     
     @Column(name ="description", nullable = false)

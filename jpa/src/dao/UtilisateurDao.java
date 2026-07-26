@@ -39,7 +39,6 @@ public class UtilisateurDao {
             System.out.println(ex.getMessage());
        }finally{
            em.close();
-           emf.close();
        }
     }
    
@@ -58,7 +57,6 @@ public class UtilisateurDao {
            System.out.println(ex.getMessage());
        }finally{
            em.close();
-           emf.close();
        }
        return findedUser;
     }
@@ -91,7 +89,6 @@ public class UtilisateurDao {
            System.out.println(ex.getMessage());
        }finally{
            em.close();
-           emf.close();
        }
     }
     
@@ -110,7 +107,6 @@ public class UtilisateurDao {
            System.out.println(ex.getMessage());
        }finally{
            em.close();
-           emf.close();
        }
     }
    
@@ -130,20 +126,14 @@ public class UtilisateurDao {
    
     public List<Utilisateur> listerUtilisateur(){
        EntityManager em = emf.createEntityManager();
-       EntityTransaction transaction = em.getTransaction();
        List<Utilisateur> listeUser = new ArrayList<>();
        
        try {
-           transaction.begin();
            listeUser = em.createQuery("SELECT u FROM Utilisateur u").getResultList();
        } catch (Exception ex) {
-           if(transaction.isActive()){
-               transaction.rollback();
-           }
            System.out.println(ex.getMessage());
        }finally{
            em.close();
-           emf.close();
        }
        
        return listeUser;

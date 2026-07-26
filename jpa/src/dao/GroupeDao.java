@@ -40,7 +40,6 @@ public class GroupeDao {
             System.out.println(ex.getMessage());
        }finally{
            em.close();
-           emf.close();
        }
    }
    
@@ -54,7 +53,6 @@ public class GroupeDao {
            System.out.println(ex.getMessage());
        }finally{
            em.close();
-           emf.close();
        }
        return findedGrp;
    }
@@ -87,7 +85,6 @@ public class GroupeDao {
            System.out.println(ex.getMessage());
        }finally{
            em.close();
-           emf.close();
        }
    }
    
@@ -108,7 +105,6 @@ public class GroupeDao {
            System.out.println(ex.getMessage());
        }finally{
            em.close();
-           emf.close();
        }
    }
    
@@ -131,22 +127,15 @@ public class GroupeDao {
    
    public List<Groupe> listerGroupe(){
        EntityManager em = emf.createEntityManager();
-       EntityTransaction transaction = em.getTransaction();
        List<Groupe> listeGrp = new ArrayList<>();
        
        try {
-           transaction.begin();
            listeGrp = em.createQuery("SELECT g FROM Groupe g").getResultList();
        } catch (Exception ex) {
-           if(transaction.isActive()){
-               transaction.rollback();
-           }
            System.out.println(ex.getMessage());
        }finally{
            em.close();
-           emf.close();
        }
-       
        return listeGrp;
    }
 }

@@ -43,12 +43,7 @@ public class UtilisateurService {
     }
     
     public void supprimer(Utilisateur user) throws Exception{
-        if(!user.getIdentifiant().equals("")){
-            this.dao.supprimerUtilisateur(user.getIdentifiant());
-            
-        }
         this.dao.supprimerUtilisateur(user.getId());
-
     }
     
 }

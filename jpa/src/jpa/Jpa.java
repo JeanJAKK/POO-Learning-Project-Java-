@@ -35,7 +35,8 @@ public class Jpa {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception{
-        new UtilisateurUI();
+        UtilisateurControleur controleur = new UtilisateurControleur();
+        controleur.controleurPrincipal();
            }
 //        UtilisateurControleur userCtrl = new UtilisateurControleur();
 //        GroupeControleur grpCtrl = new GroupeControleur();
