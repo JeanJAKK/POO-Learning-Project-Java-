@@ -25,9 +25,10 @@ public class Groupe implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     private Integer id;
     
-    @Column(name ="nom", nullable = false, unique = true)
+    @Column(name ="nom", nullable = false)
     private String nom;
     
     @Column(name ="description", nullable = false)
@@ -98,7 +99,7 @@ public class Groupe implements Serializable {
 
     @Override
     public String toString() {
-        return "Groupe{\n" + "id=" + id + ",\n nom=" + nom + ",\n description=" + description + "\n}";
+        return "Groupe{" + "id=" + id + ", nom=" + nom + ", description=" + description + '}';
     }
     
     

@@ -4,6 +4,7 @@
  */
 package mytraining;
 
+import javax.swing.JFrame;
 import mytraining.presentation.Formulaire;
 
 /**
@@ -18,6 +19,11 @@ public class MyTraining {
     public static void main(String[] args) {
         // TODO code application logic here
         new Formulaire("Formulaire d'inscription");
+        
+        JFrame f = new JFrame();
+        JFrame ff = new JFrame();
+        
+        ff.add(f);
     }
   
 }

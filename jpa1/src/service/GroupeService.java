@@ -28,14 +28,21 @@ public class GroupeService {
     }
     
     public void modifier(Groupe grp) throws Exception{
+        if(grp.getId().equals("")){
+            throw new ObjetNonTrouveException("Id requis");
+        }
         this.dao.modifierGroupe(grp);
     }
     
     public Groupe trouver(Groupe grp) throws Exception{
-        if(grp.getNom() != null){
+        if(!grp.getId().equals("")){
+            return this.dao.trouverGroupe(grp.getId());
+        }
+        
+        if(!grp.getNom().equals("")){
             return this.dao.trouverGroupe(grp.getNom());
         }
-        return this.dao.trouverGroupe(grp.getId());
+        return null;
     }
     
     public List<Groupe> lister() throws Exception{
@@ -43,7 +50,13 @@ public class GroupeService {
     }
     
     public void supprimer(Groupe grp) throws Exception{
+        if(!grp.getId().equals("")){
             this.dao.supprimerGroupe(grp.getId());
+        }
+        
+        if(!grp.getNom().equals("")){
+            this.dao.suprimerGroupe(grp.getNom());
+        }
     }
     
 }
