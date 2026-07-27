@@ -100,7 +100,9 @@ public class Utilisateur implements Serializable{
 
     @Override
     public String toString() {
-        return "Utilisateur{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", identifiant=" + identifiant + ", motDePasse=" + motDePasse + '}';
+        return "Utilisateur{" + "id=" + id + ",\n nom=" + nom + ",\n prenom="
+             + prenom + ",\n identifiant=" + identifiant + ",\n motDePasse=" + motDePasse + "}";
+        
     }
    
     public Integer getId() {

@@ -21,8 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import presentation.controleur.GroupeControleur;
 import presentation.controleur.UtilisateurControleur;
-import presentation.vue.UtilisateurDashboard;
-import presentation.vue.UtilisateurUI;
 import service.GroupeService;
 import service.UtilisateurService;
 
@@ -35,8 +33,10 @@ public class Jpa {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception{
-        UtilisateurControleur controleur = new UtilisateurControleur();
-        controleur.controleurPrincipal();
+//        UtilisateurControleur controleur = new UtilisateurControleur();
+//        controleur.ajouter();
+          new UtilisateurControleur();
+          
            }
 //        UtilisateurControleur userCtrl = new UtilisateurControleur();
 //        GroupeControleur grpCtrl = new GroupeControleur();

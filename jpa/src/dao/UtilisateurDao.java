@@ -4,6 +4,7 @@
  */
 package dao;
 
+import entite.Groupe;
 import entite.Utilisateur;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -30,13 +31,19 @@ public class UtilisateurDao {
        
        try{
            transaction.begin();
+           // Rattaché le groupe de user à l'EntityManager
+           if(user.getGroupe() != null){
+               Groupe mergedGrp = em.merge(user.getGroupe());
+               user.setGroupe(mergedGrp);
+           }
+           
            em.persist(user);
            transaction.commit();
        }catch (Exception ex){
             if(transaction.isActive()){
                 transaction.rollback();
             } 
-            System.out.println(ex.getMessage());
+            throw ex;
        }finally{
            em.close();
        }
@@ -54,7 +61,7 @@ public class UtilisateurDao {
            if(transaction.isActive()){
                transaction.rollback();
            }
-           System.out.println(ex.getMessage());
+           throw ex;
        }finally{
            em.close();
        }
@@ -86,7 +93,7 @@ public class UtilisateurDao {
            if(transaction.isActive()){
                transaction.rollback();
            }
-           System.out.println(ex.getMessage());
+           throw ex;
        }finally{
            em.close();
        }
@@ -104,7 +111,7 @@ public class UtilisateurDao {
            if(transaction.isActive()){
                transaction.rollback();
            }
-           System.out.println(ex.getMessage());
+           throw ex;
        }finally{
            em.close();
        }
@@ -131,7 +138,7 @@ public class UtilisateurDao {
        try {
            listeUser = em.createQuery("SELECT u FROM Utilisateur u").getResultList();
        } catch (Exception ex) {
-           System.out.println(ex.getMessage());
+           throw ex;
        }finally{
            em.close();
        }

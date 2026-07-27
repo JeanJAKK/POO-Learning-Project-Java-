@@ -28,18 +28,11 @@ public class GroupeUI extends JFrame{
     private JButton boutonEnregistrer;
     
     public GroupeUI(Groupe groupe){
-        String aide = """
-                      Entrer les informations suivantes
-                      Nom et description => pour ajouterId,
-                      Id, Nom et Description => pour modifier,
-                      Id => pour trouver ou supprimer,
-                      Click sur "Enregistrer" => pour lister""";
         
         this.groupe = groupe;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(800, 600);
         this.add(creerPanel());
-        JOptionPane.showMessageDialog(this, aide);
         this.setVisible(true);
     }
     

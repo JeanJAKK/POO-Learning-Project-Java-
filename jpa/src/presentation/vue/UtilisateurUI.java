@@ -63,7 +63,7 @@ public class UtilisateurUI extends JFrame{
     
     public UtilisateurUI(Utilisateur utilisateur) throws ObjetNonTrouveException{
         this();
-        this.utilisateur = new Utilisateur();
+        this.utilisateur = utilisateur;
     }
     
     public final JPanel creerFormulaire() throws ObjetNonTrouveException{
@@ -178,11 +178,11 @@ public class UtilisateurUI extends JFrame{
             throw new ObjetNonTrouveException("Nom et Identifiant requis");
         }
         
-        this.utilisateur.setIdentifiant(identifiant.getText().trim());
-        this.utilisateur.setNom(nom.getText().trim());
-        this.utilisateur.setPrenom(prenom.getText().trim());
-        this.utilisateur.setMotDePasse(String.valueOf(mot_de_passe.getPassword()));
-        this.utilisateur.setGroupe((Groupe) recupererGroupeViaNomSaisi());
+        utilisateur.setIdentifiant(identifiant.getText().trim());
+        utilisateur.setNom(nom.getText().trim());
+        utilisateur.setPrenom(prenom.getText().trim());
+        utilisateur.setMotDePasse(String.valueOf(mot_de_passe.getPassword()));
+        utilisateur.setGroupe((Groupe) recupererGroupeViaNomSaisi());
     }
     
     public int recupererId(){
@@ -237,8 +237,7 @@ public class UtilisateurUI extends JFrame{
     }
     
     // Liste des  noms des groupes pour JComboBox
-    public List<String> remplirListeGroupe() throws ObjetNonTrouveException{
-        List<String> listeNomGrp = new ArrayList<>();
+    public void remplirListeGroupe() throws ObjetNonTrouveException{
         try {
             List<Groupe> listeGrp = new GroupeDao().listerGroupe();
             
@@ -248,7 +247,6 @@ public class UtilisateurUI extends JFrame{
         } catch (Exception e) {
             throw e;
         }
-        return listeNomGrp ;
     }
     
     // recuperer le groupe à partir du nom selectionner dans ComboBox

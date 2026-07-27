@@ -32,6 +32,9 @@ public class GroupeService {
     }
     
     public Groupe trouver(Groupe grp) throws Exception{
+        if(!grp.getNom().equals("")){
+            return this.dao.trouverGroupe(grp.getNom());
+        }
         return this.dao.trouverGroupe(grp.getId());
     }
     
