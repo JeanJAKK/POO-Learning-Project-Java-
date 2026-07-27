@@ -28,7 +28,7 @@ public class UtilisateurService {
     }
     
     public Utilisateur trouver(Utilisateur user) throws Exception{
-        if(!user.getIdentifiant().equals("")){
+        if(user.getIdentifiant() != null){
             return this.dao.trouverUtilisateur(user.getIdentifiant());
         }
         return this.dao.trouverUtilisateur(user.getId());
