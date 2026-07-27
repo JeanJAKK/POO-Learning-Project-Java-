@@ -100,8 +100,8 @@ public class Utilisateur implements Serializable{
 
     @Override
     public String toString() {
-        return "Utilisateur{" + "id=" + id + ",\n nom=" + nom + ",\n prenom="
-             + prenom + ",\n identifiant=" + identifiant + ",\n motDePasse=" + motDePasse + "}";
+        return "Utilisateur{\n" + "id=" + id + ",\n nom=" + nom + ",\n prenom="
+             + prenom + ",\n identifiant=" + identifiant + ",\n motDePasse=" + motDePasse + "\n}";
         
     }
    

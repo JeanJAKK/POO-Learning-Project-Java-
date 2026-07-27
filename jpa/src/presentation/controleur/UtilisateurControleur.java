@@ -47,6 +47,7 @@ public class UtilisateurControleur {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 crudEnCours = Crud.AJOUTER;
+                utilisateurUI.afficherSurEcran("Mode AJOUT");
                 utilisateurUI.getBoutonEnregistrer().setEnabled(true);
             }
         });
@@ -55,6 +56,7 @@ public class UtilisateurControleur {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 crudEnCours = Crud.MODIFIER;
+                utilisateurUI.afficherSurEcran("Mode MODIFICATION");
                 utilisateurUI.getBoutonEnregistrer().setEnabled(true);
             }
         });
@@ -63,6 +65,7 @@ public class UtilisateurControleur {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 crudEnCours = Crud.TROUVER;
+                utilisateurUI.afficherSurEcran("Mode TROUVER");
                 utilisateurUI.getBoutonEnregistrer().setEnabled(true);
             }
         });
@@ -71,6 +74,7 @@ public class UtilisateurControleur {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 crudEnCours = Crud.SUPPRIMER;
+                utilisateurUI.afficherSurEcran("Mode SUPPRESSION");
                 utilisateurUI.getBoutonEnregistrer().setEnabled(true);
             }
         });
@@ -79,6 +83,7 @@ public class UtilisateurControleur {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 crudEnCours = Crud.LISTER;
+                utilisateurUI.afficherSurEcran("Mode LISTER");
                 utilisateurUI.getBoutonEnregistrer().setEnabled(true);
             }
         });
@@ -164,7 +169,8 @@ public class UtilisateurControleur {
             String message = "Liste des utilisateurs: \n";
             List<Utilisateur> liste = service.lister();
             for(Utilisateur l : liste){
-                message += l.toString() + "\n";
+                message += "\n" + l.toString() + "\n";
+                message += "_".repeat(30) + "\n";
             }
             utilisateurUI.afficherSurEcran(message);
         } catch (Exception ex) {
