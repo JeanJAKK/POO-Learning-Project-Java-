@@ -62,7 +62,7 @@ public class Groupe implements Serializable {
         return description;
     }
     
-    public void setId(int id){
+    public void setId(Integer id){
         this.id = id;
     }
     
