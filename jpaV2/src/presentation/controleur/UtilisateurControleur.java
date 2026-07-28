@@ -5,12 +5,14 @@
 package presentation.controleur;
 
 import entite.Utilisateur;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import presentation.vue.AccueilUI;
 import presentation.vue.UtilisateurUI;
 import service.UtilisateurService;
 import util.ObjetNonTrouveException;
@@ -31,70 +33,110 @@ public class UtilisateurControleur {
     private final UtilisateurService service;
     private final UtilisateurUI utilisateurUI;
     private final Utilisateur utilisateur;
+    private final AccueilUI accuielUI;
     
     public UtilisateurControleur() throws ObjetNonTrouveException{
         this.service = new UtilisateurService();
         this.utilisateur = new Utilisateur();
+        this.accuielUI = new AccueilUI();
         this.utilisateurUI = new UtilisateurUI(utilisateur);
-        this.utilisateurUI.afficherSurEcran("Bonjour");
-        this.utilisateurUI.getBoutonEnregistrer().setEnabled(false);
         
         ajouterEcouteur();
+        
     }
     
     private void ajouterEcouteur(){
-        utilisateurUI.getBoutonAjouter().addActionListener(new ActionListener() {
+        // Acceder à l'interface de Groupe à partir de celui d'Utilisateur
+        accuielUI.getBoutonGrp().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                crudEnCours = Crud.AJOUTER;
-                utilisateurUI.afficherSurEcran("Mode AJOUT");
-                utilisateurUI.getBoutonEnregistrer().setEnabled(true);
+                try {
+                    new GroupeControleur();
+                } catch (ObjetNonTrouveException ex) {
+                    Logger.getLogger(GroupeControleur.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         
-        utilisateurUI.getBoutonModifier().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                crudEnCours = Crud.MODIFIER;
-                utilisateurUI.afficherSurEcran("Mode MODIFICATION");
-                utilisateurUI.getBoutonEnregistrer().setEnabled(true);
-            }
-        });
-        
-        utilisateurUI.getBoutonTrouver().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                crudEnCours = Crud.TROUVER;
-                utilisateurUI.afficherSurEcran("Mode TROUVER");
-                utilisateurUI.getBoutonEnregistrer().setEnabled(true);
-            }
-        });
-        
-        utilisateurUI.getBoutonSupprimer().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                crudEnCours = Crud.SUPPRIMER;
-                utilisateurUI.afficherSurEcran("Mode SUPPRESSION");
-                utilisateurUI.getBoutonEnregistrer().setEnabled(true);
-            }
-        });
-        
-        utilisateurUI.getBoutonLister().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                crudEnCours = Crud.LISTER;
-                utilisateurUI.afficherSurEcran("Mode LISTER");
-                utilisateurUI.getBoutonEnregistrer().setEnabled(true);
-            }
-        });
-        
-        utilisateurUI.getBoutonEnregistrer().addActionListener(new ActionListener() {
+        accuielUI.getBoutonEnregistrer().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 executerAction();
             }
         });
+        
+        accuielUI.getBoutonAnnuler().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                utilisateurUI.viderFormulaire();
+            }
+        });
+        
+        accuielUI.getBoutonUser().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+
+                // Désactiver les boutons
+                accuielUI.getBoutonAjouter().setEnabled(true);
+                accuielUI.getBoutonModifier().setEnabled(true);
+                accuielUI.getBoutonTrouver().setEnabled(true);
+                accuielUI.getBoutonSupprimer().setEnabled(true);
+
+                try {
+                    accuielUI.getPanelOuest().add(utilisateurUI.creerFormulaire(), BorderLayout.WEST);
+                    accuielUI.getPanelESt().add(utilisateurUI.chargerJTable(), BorderLayout.CENTER);
+
+                    accuielUI.getPanelESt().revalidate();
+                    accuielUI.getPanelESt().repaint();
+
+                    accuielUI.getPanelOuest().revalidate();
+                    accuielUI.getPanelOuest().repaint();
+                } catch (ObjetNonTrouveException ex) {
+                    Logger.getLogger(AccueilUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
+        accuielUI.getBoutonAjouter().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                crudEnCours = Crud.AJOUTER;
+                accuielUI.getBoutonEnregistrer().setEnabled(true);
+                accuielUI.getBoutonAnnuler().setEnabled(true);
+            }
+        });
+        
+        accuielUI.getBoutonTrouver().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                crudEnCours = Crud.TROUVER;
+                accuielUI.getBoutonEnregistrer().setEnabled(true);
+                accuielUI.getBoutonAnnuler().setEnabled(true);
+
+            }
+        });
+        
+        accuielUI.getBoutonModifier().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                crudEnCours = Crud.MODIFIER;
+                accuielUI.getBoutonEnregistrer().setEnabled(true);
+                accuielUI.getBoutonAnnuler().setEnabled(true);
+
+            }
+        });
+        
+        accuielUI.getBoutonSupprimer().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                crudEnCours = Crud.SUPPRIMER;
+                accuielUI.getBoutonEnregistrer().setEnabled(true);
+                accuielUI.getBoutonAnnuler().setEnabled(true);
+
+            }
+        });
     }
+    
     
     public void ajouter() throws ObjetNonTrouveException{
         try {
@@ -102,7 +144,6 @@ public class UtilisateurControleur {
             Utilisateur u = utilisateurUI.getUtilisateur();
             service.ajouter(u);
             utilisateurUI.viderFormulaire();
-            utilisateurUI.afficherSurEcran("Ajout effectué avec succès.");
         } catch (ObjetNonTrouveException ex) {
             Logger.getLogger(UtilisateurControleur.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -114,7 +155,6 @@ public class UtilisateurControleur {
             Utilisateur u = utilisateurUI.getUtilisateur();
             u.setId(utilisateurUI.recupererId());
             service.modifier(u);
-            utilisateurUI.afficherSurEcran("Modification effectuée avec succès.");
         } catch (ObjetNonTrouveException ex) {
         } catch(Exception ex){
             Logger.getLogger(UtilisateurControleur.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,25 +164,26 @@ public class UtilisateurControleur {
     
     public void trouver() throws ObjetNonTrouveException{
         try {
-           String findedUser = "";
+           Utilisateur findedUser = null;
            int ouiOuNon = JOptionPane.showConfirmDialog(utilisateurUI, """
                                     click Oui pour chercher avec lId
                                     click Non pour chercher avec l'Identifiant
                                     """);
            if(ouiOuNon == JOptionPane.YES_OPTION){
                utilisateur.setId(utilisateurUI.recupererId());
-               findedUser = service.trouver(utilisateur).toString();
+               findedUser = service.trouver(utilisateur);
            }else if(ouiOuNon == JOptionPane.NO_OPTION){
                String identifiant = JOptionPane.showInputDialog(utilisateurUI, "Entrer l'identifiant");
                utilisateur.setIdentifiant(identifiant);
-               findedUser = service.trouver(utilisateur).toString();
+               findedUser = service.trouver(utilisateur);
            }
 
-           if(findedUser.equals("")){
-               utilisateurUI.afficherSurEcran("Aucun utilisateur trouvé");
+           if(findedUser == null){
+               JOptionPane.showMessageDialog(accuielUI, "Aucun utilisateur trouvé");
                return;
            }
-           utilisateurUI.afficherSurEcran("Utilisateur trouvé: " + findedUser);
+           
+           utilisateurUI.remplirFormulaire(findedUser);
            
        } catch (ObjetNonTrouveException ex) {
            JOptionPane.showMessageDialog(utilisateurUI, ex.getMessage());
@@ -156,7 +197,6 @@ public class UtilisateurControleur {
         try {
             utilisateur.setId(utilisateurUI.recupererId());
             service.supprimer(utilisateur);
-            utilisateurUI.afficherSurEcran("Suppression effectuée avec succès.");
         } catch (ObjetNonTrouveException e) {
             JOptionPane.showMessageDialog(utilisateurUI, e.getMessage());
         } catch(Exception ex){
@@ -172,7 +212,6 @@ public class UtilisateurControleur {
                 message += "\n" + l.toString() + "\n";
                 message += "_".repeat(30) + "\n";
             }
-            utilisateurUI.afficherSurEcran(message);
         } catch (Exception ex) {
             Logger.getLogger(UtilisateurControleur.class.getName()).log(Level.SEVERE, null, ex);
         }

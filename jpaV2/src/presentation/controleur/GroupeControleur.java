@@ -5,13 +5,14 @@
 package presentation.controleur;
 
 import entite.Groupe;
-import entite.Utilisateur;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import presentation.vue.AccueilUI;
 import presentation.vue.GroupeUI;
 import service.GroupeService;
 import util.ObjetNonTrouveException;
@@ -23,135 +24,169 @@ import util.ObjetNonTrouveException;
 public class GroupeControleur {
     private enum Crud{
         AJOUTER,
-        TROUVER,
         MODIFIER,
+        TROUVER,
         SUPPRIMER,
         LISTER
     }
     private Crud crudEnCours;
     private final GroupeService service;
-    private final Groupe groupe;
     private final GroupeUI groupeUI;
+    private final Groupe groupe;
+    private final AccueilUI accuielUI;
     
     public GroupeControleur() throws ObjetNonTrouveException{
-        this.groupe = new Groupe();
-        this.groupeUI = new GroupeUI(groupe);
         this.service = new GroupeService();
-        this.groupeUI.afficherSurEcran("Bonjour...");
-        this.groupeUI.getBoutonEnregistrer().setEnabled(false);
+        this.groupe = new Groupe();
+        this.accuielUI = new AccueilUI();
+        this.groupeUI = new GroupeUI(groupe);
         
         ajouterEcouteur();
+        
     }
     
     private void ajouterEcouteur(){
-        groupeUI.getBoutonAjouter().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                crudEnCours = GroupeControleur.Crud.AJOUTER;
-                groupeUI.afficherSurEcran("Mode AJOUT");
-                groupeUI.getBoutonEnregistrer().setEnabled(true);
-            }
-        });
-        
-        groupeUI.getBoutonModifier().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                crudEnCours = GroupeControleur.Crud.MODIFIER;
-                groupeUI.afficherSurEcran("Mode MODIFICATION");
-                groupeUI.getBoutonEnregistrer().setEnabled(true);
-            }
-        });
-        
-        groupeUI.getBoutonTrouver().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                crudEnCours = GroupeControleur.Crud.TROUVER;
-                groupeUI.afficherSurEcran("Mode TROUVER");
-                groupeUI.getBoutonEnregistrer().setEnabled(true);
-            }
-        });
-        
-        groupeUI.getBoutonSupprimer().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                crudEnCours = GroupeControleur.Crud.SUPPRIMER;
-                groupeUI.afficherSurEcran("Mode SUPPRESSION");
-                groupeUI.getBoutonEnregistrer().setEnabled(true);
-            }
-        });
-        
-        groupeUI.getBoutonLister().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                crudEnCours = GroupeControleur.Crud.LISTER;
-                groupeUI.afficherSurEcran("Mode LISTER");
-                groupeUI.getBoutonEnregistrer().setEnabled(true);
-            }
-        });
-        
-        groupeUI.getBoutonEnregistrer().addActionListener(new ActionListener() {
+        accuielUI.getBoutonEnregistrer().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 executerAction();
             }
-        });    
+        });
+        
+        accuielUI.getBoutonAnnuler().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                groupeUI.viderFormulaire();
+            }
+        });
+        
+        accuielUI.getBoutonGrp().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+
+                // Désactiver les boutons
+                accuielUI.getBoutonAjouter().setEnabled(true);
+                accuielUI.getBoutonModifier().setEnabled(true);
+                accuielUI.getBoutonTrouver().setEnabled(true);
+                accuielUI.getBoutonSupprimer().setEnabled(true);
+
+                accuielUI.getPanelOuest().add(groupeUI.creerFormulaire(), BorderLayout.WEST);
+                accuielUI.getPanelESt().add(groupeUI.chargerTable(), BorderLayout.CENTER);
+                
+                accuielUI.getPanelESt().revalidate();
+                accuielUI.getPanelESt().repaint();
+                accuielUI.getPanelOuest().revalidate();
+                accuielUI.getPanelOuest().repaint();
+            }
+        });
+        
+        accuielUI.getBoutonAjouter().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                crudEnCours = Crud.AJOUTER;
+                accuielUI.getBoutonEnregistrer().setEnabled(true);
+                accuielUI.getBoutonAnnuler().setEnabled(true);
+            }
+        });
+        
+        accuielUI.getBoutonTrouver().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                crudEnCours = Crud.TROUVER;
+                accuielUI.getBoutonEnregistrer().setEnabled(true);
+                accuielUI.getBoutonAnnuler().setEnabled(true);
+
+            }
+        });
+        
+        accuielUI.getBoutonModifier().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                crudEnCours = Crud.MODIFIER;
+                accuielUI.getBoutonEnregistrer().setEnabled(true);
+                accuielUI.getBoutonAnnuler().setEnabled(true);
+
+            }
+        });
+        
+        accuielUI.getBoutonSupprimer().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                crudEnCours = Crud.SUPPRIMER;
+                accuielUI.getBoutonEnregistrer().setEnabled(true);
+                accuielUI.getBoutonAnnuler().setEnabled(true);
+
+            }
+        });
     }
+    
     
     public void ajouter() throws ObjetNonTrouveException{
         try {
             groupeUI.modifierGroupe();
-            Groupe g = groupeUI.getGroupe();
+            Groupe g =  groupeUI.getGroupe();
             service.ajouter(g);
-        } catch (ObjetNonTrouveException ex) {
-            JOptionPane.showMessageDialog(groupeUI, ex.getMessage());
+            groupeUI.viderFormulaire();
         } catch (Exception ex) {
             Logger.getLogger(GroupeControleur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void modifier(){
+    public void modifier() throws ObjetNonTrouveException{
         try {
             groupeUI.modifierGroupe();
             Groupe g = groupeUI.getGroupe();
+            g.setId (groupeUI.recupererId());
             service.modifier(g);
+        } catch (Exception ex) {
+            Logger.getLogger(GroupeControleur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    
+    public void trouver() throws ObjetNonTrouveException{
+        try {
+           Groupe findedGrp = null;
+           int ouiOuNon = JOptionPane.showConfirmDialog(groupeUI, """
+                                    click Oui pour chercher avec lId
+                                    click Non pour chercher avec l'Identifiant
+                                    """);
+           if(ouiOuNon == JOptionPane.YES_OPTION){
+               groupe.setId(groupeUI.recupererId());
+               findedGrp = service.trouver(groupe);
+           }else if(ouiOuNon == JOptionPane.NO_OPTION){
+               String nom = JOptionPane.showInputDialog(groupeUI, "Entrer l'identifiant");
+               groupe.setNom(nom);
+               findedGrp = service.trouver(groupe);
+           }
+
+           if(findedGrp == null){
+               JOptionPane.showMessageDialog(accuielUI, "Aucun utilisateur trouvé");
+               return;
+           }
+           
+           groupeUI.remplirFormulaire(findedGrp);
+           
+       } catch (ObjetNonTrouveException ex) {
+           JOptionPane.showMessageDialog(groupeUI, ex.getMessage());
+       } catch(Exception ex){
+           Logger.getLogger(UtilisateurControleur.class.getName()).log(Level.SEVERE, null, ex);
+
+       }
+    }
+    
+    public void supprimer() throws ObjetNonTrouveException{
+        try {
+            groupe.setId(groupeUI.recupererId());
+            service.supprimer(groupe);
         } catch (ObjetNonTrouveException e) {
             JOptionPane.showMessageDialog(groupeUI, e.getMessage());
-        } catch (Exception ex) {
-            Logger.getLogger(GroupeControleur.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(Exception ex){
+            Logger.getLogger(UtilisateurControleur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void supprimer(){
-        try {
-            groupeUI.modifierGroupe();
-            Groupe g = groupeUI.getGroupe();
-            service.supprimer(g);
-        } catch (ObjetNonTrouveException ex) {
-            JOptionPane.showMessageDialog(groupeUI, ex.getMessage());
-        } catch (Exception ex) {
-            Logger.getLogger(GroupeControleur.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void trouver(){
-        try {
-            groupeUI.modifierGroupe();
-            Groupe g = groupeUI.getGroupe();
-             String grpFinded = service.trouver(g).toString();
-
-            if(grpFinded.equals("")){
-                groupeUI.afficherSurEcran("Aucun groupe trouvé");
-                return;
-            }
-            groupeUI.afficherSurEcran("Groupe trouvé: \n" + grpFinded);
-        } catch (ObjetNonTrouveException ex) {
-            JOptionPane.showMessageDialog(groupeUI, ex.getMessage());
-        } catch (Exception ex) {
-            Logger.getLogger(GroupeControleur.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void lister(){
+    public void lister() throws ObjetNonTrouveException{
         try {
             String message = "Liste des utilisateurs: \n";
             List<Groupe> liste = service.lister();
@@ -159,9 +194,8 @@ public class GroupeControleur {
                 message += "\n" + l.toString() + "\n";
                 message += "_".repeat(30) + "\n";
             }
-            groupeUI.afficherSurEcran(message);
         } catch (Exception ex) {
-            Logger.getLogger(GroupeControleur.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UtilisateurControleur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -171,11 +205,11 @@ public class GroupeControleur {
                 case AJOUTER:
                     ajouter();
                     break;
-                case MODIFIER:
-                    modifier();
-                    break;
                 case TROUVER:
                     trouver();
+                    break;
+                case MODIFIER:
+                    modifier();
                     break;
                 case SUPPRIMER:
                     supprimer();
@@ -186,7 +220,6 @@ public class GroupeControleur {
                 default:
                     JOptionPane.showMessageDialog(groupeUI, "Veuillez choisir une action");
             }
-            
         } catch (ObjetNonTrouveException ex) {
             JOptionPane.showMessageDialog(groupeUI, ex.getMessage());
         }
