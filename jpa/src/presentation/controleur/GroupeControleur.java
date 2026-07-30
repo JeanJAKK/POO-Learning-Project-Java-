@@ -47,7 +47,7 @@ public class GroupeControleur {
         groupeUI.getBoutonAjouter().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                crudEnCours = GroupeControleur.Crud.AJOUTER;
+                crudEnCours = Crud.AJOUTER;
                 groupeUI.afficherSurEcran("Mode AJOUT");
                 groupeUI.getBoutonEnregistrer().setEnabled(true);
             }
@@ -56,7 +56,7 @@ public class GroupeControleur {
         groupeUI.getBoutonModifier().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                crudEnCours = GroupeControleur.Crud.MODIFIER;
+                crudEnCours = Crud.MODIFIER;
                 groupeUI.afficherSurEcran("Mode MODIFICATION");
                 groupeUI.getBoutonEnregistrer().setEnabled(true);
             }
@@ -65,7 +65,7 @@ public class GroupeControleur {
         groupeUI.getBoutonTrouver().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                crudEnCours = GroupeControleur.Crud.TROUVER;
+                crudEnCours = Crud.TROUVER;
                 groupeUI.afficherSurEcran("Mode TROUVER");
                 groupeUI.getBoutonEnregistrer().setEnabled(true);
             }
@@ -74,7 +74,7 @@ public class GroupeControleur {
         groupeUI.getBoutonSupprimer().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                crudEnCours = GroupeControleur.Crud.SUPPRIMER;
+                crudEnCours = Crud.SUPPRIMER;
                 groupeUI.afficherSurEcran("Mode SUPPRESSION");
                 groupeUI.getBoutonEnregistrer().setEnabled(true);
             }
@@ -83,7 +83,7 @@ public class GroupeControleur {
         groupeUI.getBoutonLister().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                crudEnCours = GroupeControleur.Crud.LISTER;
+                crudEnCours = Crud.LISTER;
                 groupeUI.afficherSurEcran("Mode LISTER");
                 groupeUI.getBoutonEnregistrer().setEnabled(true);
             }
@@ -102,6 +102,7 @@ public class GroupeControleur {
             groupeUI.modifierGroupe();
             Groupe g = groupeUI.getGroupe();
             service.ajouter(g);
+            groupeUI.afficherSurEcran("Ajout effectué avec succès");
         } catch (ObjetNonTrouveException ex) {
             JOptionPane.showMessageDialog(groupeUI, ex.getMessage());
         } catch (Exception ex) {
@@ -114,6 +115,7 @@ public class GroupeControleur {
             groupeUI.modifierGroupe();
             Groupe g = groupeUI.getGroupe();
             service.modifier(g);
+            groupeUI.afficherSurEcran("Modification effectué avec succès");
         } catch (ObjetNonTrouveException e) {
             JOptionPane.showMessageDialog(groupeUI, e.getMessage());
         } catch (Exception ex) {
@@ -126,6 +128,7 @@ public class GroupeControleur {
             groupeUI.modifierGroupe();
             Groupe g = groupeUI.getGroupe();
             service.supprimer(g);
+            groupeUI.afficherSurEcran("Suppression effectué avec succès");
         } catch (ObjetNonTrouveException ex) {
             JOptionPane.showMessageDialog(groupeUI, ex.getMessage());
         } catch (Exception ex) {
@@ -137,7 +140,21 @@ public class GroupeControleur {
         try {
             groupeUI.modifierGroupe();
             Groupe g = groupeUI.getGroupe();
-             String grpFinded = service.trouver(g).toString();
+            String grpFinded = service.trouver(g).toString();
+            
+            int ouiOuNon = JOptionPane.showConfirmDialog(groupeUI, """
+                                    click Oui pour chercher avec lId
+                                    click Non pour chercher avec l'Identifiant
+                                    """);
+           if(ouiOuNon == JOptionPane.YES_OPTION){
+               groupe.setId(groupeUI.recupererId());
+               grpFinded = service.trouver(groupe).toString();
+           }else if(ouiOuNon == JOptionPane.NO_OPTION){
+               String nom = JOptionPane.showInputDialog(groupeUI, "Entrer l'identifiant");
+               groupe.setNom(nom);
+               grpFinded = service.trouver(groupe).toString();
+           }
+
 
             if(grpFinded.equals("")){
                 groupeUI.afficherSurEcran("Aucun groupe trouvé");

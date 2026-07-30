@@ -9,10 +9,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -144,8 +146,8 @@ public class GroupeUI extends JFrame{
     }
     
     public void modifierGroupe()throws ObjetNonTrouveException{
-        if(id.getText().trim().equals("") || nom.getText().trim().equals("")){
-            throw new ObjetNonTrouveException("Id et Nom requis");
+        if(nom.getText().trim().equals("")){
+            throw new ObjetNonTrouveException("Nom requis");
         }
         
         this.groupe.setNom(nom.getText().trim());
@@ -187,5 +189,17 @@ public class GroupeUI extends JFrame{
     
     public void afficherSurEcran(String affichage){
         output.setText(affichage);
+    }
+    
+     public int recupererId(){
+        while (true) {            
+            try {
+                String input = JOptionPane.showInputDialog(this, "Veuillez Renseigner l'Id: ");
+                int parseInt = Integer.parseInt(input.trim());
+                return parseInt;
+            } catch (HeadlessException | NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Entrer un entier valide!");
+            }
+        }
     }
 }
