@@ -125,9 +125,8 @@ public class GroupeControleur {
     
     public void supprimer(){
         try {
-            groupeUI.modifierGroupe();
-            Groupe g = groupeUI.getGroupe();
-            service.supprimer(g);
+            groupe.setId(groupeUI.recupererId());
+            service.supprimer(groupe);
             groupeUI.afficherSurEcran("Suppression effectué avec succès");
         } catch (ObjetNonTrouveException ex) {
             JOptionPane.showMessageDialog(groupeUI, ex.getMessage());
@@ -138,22 +137,20 @@ public class GroupeControleur {
     
     public void trouver(){
         try {
-            groupeUI.modifierGroupe();
-            Groupe g = groupeUI.getGroupe();
-            String grpFinded = service.trouver(g).toString();
+            String grpFinded = "";
             
             int ouiOuNon = JOptionPane.showConfirmDialog(groupeUI, """
                                     click Oui pour chercher avec lId
-                                    click Non pour chercher avec l'Identifiant
+                                    click Non pour chercher avec le nom
                                     """);
-           if(ouiOuNon == JOptionPane.YES_OPTION){
-               groupe.setId(groupeUI.recupererId());
-               grpFinded = service.trouver(groupe).toString();
-           }else if(ouiOuNon == JOptionPane.NO_OPTION){
-               String nom = JOptionPane.showInputDialog(groupeUI, "Entrer l'identifiant");
-               groupe.setNom(nom);
-               grpFinded = service.trouver(groupe).toString();
-           }
+            if(ouiOuNon == JOptionPane.YES_OPTION){
+                groupe.setId(groupeUI.recupererId());
+                grpFinded = service.trouver(groupe).toString();
+            }else if(ouiOuNon == JOptionPane.NO_OPTION){
+                String nom = JOptionPane.showInputDialog(groupeUI, "Entrer le nom");
+                groupe.setNom(nom);
+                grpFinded = service.trouver(groupe).toString();
+            }
 
 
             if(grpFinded.equals("")){

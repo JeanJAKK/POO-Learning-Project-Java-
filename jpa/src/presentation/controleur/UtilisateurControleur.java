@@ -142,7 +142,7 @@ public class UtilisateurControleur {
                utilisateurUI.afficherSurEcran("Aucun utilisateur trouvé");
                return;
            }
-           utilisateurUI.afficherSurEcran("Utilisateur trouvé: " + findedUser);
+           utilisateurUI.afficherSurEcran("Utilisateur trouvé: \n" + findedUser);
            
        } catch (ObjetNonTrouveException ex) {
            JOptionPane.showMessageDialog(utilisateurUI, ex.getMessage());
