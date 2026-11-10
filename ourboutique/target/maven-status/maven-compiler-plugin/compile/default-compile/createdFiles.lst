@@ -1,0 +1,14 @@
+service/AchatService.class
+entité/Categorie.class
+entité/Employee.class
+service/EmployeeService.class
+service/CategorieService.class
+entité/Achat.class
+com/mycompany/boutique/Boutique.class
+entité/Produit.class
+entité/ProduitAchete.class
+entité/Client.class
+service/ProduitAcheteService.class
+entité/Personne.class
+service/ClientService.class
+service/ProduitService.class
